@@ -24,7 +24,6 @@ import com.metamx.common.scala.untyped.Dict
 import org.joda.time.Period
 
 case class DruidTuning(
-  maxRowsInMemory: Int = 75000,
   intermediatePersistPeriod: Period = 10.minutes,
   maxPendingPersists: Int = 0,
   buildV9Directly: Boolean = false
@@ -32,7 +31,6 @@ case class DruidTuning(
 {
   def toMap: Dict = Dict(
     "type" -> "realtime",
-    "maxRowsInMemory" -> maxRowsInMemory,
     "intermediatePersistPeriod" -> intermediatePersistPeriod.toString(),
     "maxPendingPersists" -> maxPendingPersists,
     "buildV9Directly" -> buildV9Directly
@@ -45,18 +43,16 @@ object DruidTuning
     * Real-time Druid tuning parameters. These are passed directly to the Druid indexing service. See the Druid
     * documentation for their meanings.
     *
-    * @param maxRowsInMemory           number of rows to aggregate before persisting
     * @param intermediatePersistPeriod period that determines the rate at which intermediate persists occur
     * @param maxPendingPersists        number of persists that can be pending, but not started
     */
   @deprecated("use 'apply' or 'builder'", "0.7.3")
   def create(
-    maxRowsInMemory: Int,
     intermediatePersistPeriod: Period,
     maxPendingPersists: Int
   ): DruidTuning =
   {
-    apply(maxRowsInMemory, intermediatePersistPeriod, maxPendingPersists)
+    apply(intermediatePersistPeriod, maxPendingPersists)
   }
 
   /**
@@ -70,7 +66,6 @@ object DruidTuning
   private[tranquility] def fromMap(d: Dict): DruidTuning = {
     val defaults = DruidTuning()
     DruidTuning(
-      maxRowsInMemory = d.get("maxRowsInMemory").map(String.valueOf(_).toInt).getOrElse(defaults.maxRowsInMemory),
       intermediatePersistPeriod = d.get("intermediatePersistPeriod").map(new Period(_)).getOrElse(
         defaults.intermediatePersistPeriod
       ),
@@ -82,13 +77,6 @@ object DruidTuning
 
   class Builder private[tranquility](config: DruidTuning)
   {
-    /**
-      * Number of rows to aggregate before persisting.
-      *
-      * Default is 75000.
-      */
-    def maxRowsInMemory(x: Int) = new Builder(config.copy(maxRowsInMemory = x))
-
     /**
       * Period that determines the rate at which intermediate persists occur.
       *

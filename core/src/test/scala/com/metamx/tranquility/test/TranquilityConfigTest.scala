@@ -55,7 +55,6 @@ class TranquilityConfigTest extends FunSuite with ShouldMatchers
       builder.config._rollup.get.isRollup should be(false)
       builder.config._druidTuningMap.get should be(Dict(
         "type" -> "realtime",
-        "maxRowsInMemory" -> 100000,
         "buildV9Directly" -> true,
         "intermediatePersistPeriod" -> "PT45S",
         "windowPeriod" -> "PT30S",
@@ -85,7 +84,6 @@ class TranquilityConfigTest extends FunSuite with ShouldMatchers
       builder.config._rollup.get.isRollup should be(false)
       builder.config._druidTuningMap.get should be(Dict(
         "type" -> "realtime",
-        "maxRowsInMemory" -> 100000,
         "buildV9Directly" -> true,
         "intermediatePersistPeriod" -> "PT45S",
         "windowPeriod" -> "PT30S",
@@ -114,7 +112,6 @@ class TranquilityConfigTest extends FunSuite with ShouldMatchers
       builder.config._rollup.get.aggregators.map(_.getName) should be(Seq("count", "x"))
       builder.config._druidTuningMap.get should be(Dict(
         "type" -> "realtime",
-        "maxRowsInMemory" -> 100000,
         "buildV9Directly" -> true,
         "intermediatePersistPeriod" -> "PT45S",
         "windowPeriod" -> "PT30S",
@@ -143,7 +140,6 @@ class TranquilityConfigTest extends FunSuite with ShouldMatchers
       builder.config._rollup.get.aggregators.map(_.getName) should be(Seq("count", "x"))
       builder.config._druidTuningMap.get should be(Dict(
         "type" -> "realtime",
-        "maxRowsInMemory" -> 75000,
         "buildV9Directly" -> false,
         "intermediatePersistPeriod" -> "PT10M",
         "maxPendingPersists" -> 0
