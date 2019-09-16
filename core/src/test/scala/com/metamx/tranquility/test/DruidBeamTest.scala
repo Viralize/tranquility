@@ -133,7 +133,6 @@ class DruidBeamTest extends FunSuite with Matchers
         windowPeriod = 4.minutes
       ),
       DruidTuning(
-        maxRowsInMemory = 100,
         intermediatePersistPeriod = 3.minutes,
         maxPendingPersists = 3
       ).toMap,
@@ -165,7 +164,6 @@ class DruidBeamTest extends FunSuite with Matchers
 
     val tuningConfig = task.getRealtimeIngestionSchema.getTuningConfig
     tuningConfig.getWindowPeriod should be(4.minutes.toPeriod)
-    tuningConfig.getMaxRowsInMemory should be(100)
     tuningConfig.getIntermediatePersistPeriod should be(3.minutes.toPeriod)
     tuningConfig.getMaxPendingPersists should be(3)
     tuningConfig.getShardSpec shouldBe a[LinearShardSpec]
